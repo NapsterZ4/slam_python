@@ -4,9 +4,8 @@ from breezyslam.algorithms import RMHC_SLAM
 from breezyslam.sensors import Laser
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 
-MAP_SIZE = 4000
+MAP_SIZE = 2000
 
 plt.ion()
 fig, ax = plt.subplots()
@@ -30,8 +29,6 @@ class MyLaser(Laser):
 
 mapbytes = bytearray(MAP_SIZE*MAP_SIZE)
 slam = RMHC_SLAM(MyLaser(), MAP_SIZE, 30)
-
-df_lidar = pd.DataFrame()
 
 
 def run_robot():
