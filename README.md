@@ -17,7 +17,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ``
 
-3. Ejecutar el algoritmo (es necesario tener habilitado el API de CoppeliaSim)
+3. Instalar el algoritmo de BreezySLAM
+<pre>
+git clone https://github.com/simondlevy/BreezySLAM?tab=readme-ov-file
+cd BreezySlam/python
+pip install .
+</pre>
+
+
+4. Ejecutar el algoritmo (es necesario tener habilitado el API de CoppeliaSim)
 
 ``
 python3 main.py

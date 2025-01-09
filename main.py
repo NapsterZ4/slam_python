@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-MAP_SIZE = 800
+MAP_SIZE = 4000
 
 plt.ion()
 fig, ax = plt.subplots()
@@ -19,23 +19,22 @@ plt.axis('off')
 class MyLaser(Laser):
     def __init__(self):
         super().__init__(
-            scan_size=684, #542, #684
-            scan_rate_hz=1500,
-            detection_angle_degrees=270,
-            distance_no_detection_mm=5,
+            scan_size=684,
+            scan_rate_hz=10,
+            detection_angle_degrees=240,
+            distance_no_detection_mm=4000,
             detection_margin=5,
             offset_mm=1
         )
 
 
 mapbytes = bytearray(MAP_SIZE*MAP_SIZE)
-slam = RMHC_SLAM(MyLaser(), MAP_SIZE, 5)
+slam = RMHC_SLAM(MyLaser(), MAP_SIZE, 30)
 
 df_lidar = pd.DataFrame()
 
 
 def run_robot():
-    lidar_data = []
     coppelia = robotica.Coppelia()
     robot = robotica.P3DX(coppelia.sim, 'PioneerP3DX')
     controller = FuzzyController()
@@ -46,8 +45,8 @@ def run_robot():
         while coppelia.is_running():
             sonar_readings = robot.get_sonar()
             lidar_readings = robot.get_lidar_data()
-            lidar_data.append(lidar_readings)
 
+            lidar_readings = [x * 1000 for x in lidar_readings]
             position = robot.get_position()
 
             slam.update(
@@ -56,8 +55,6 @@ def run_robot():
                 should_update_map=True
             )
 
-            x, y, z = slam.getpos()
-
             left_speed, right_speed = controller.compute_movement(
                 sonar_readings
             )
@@ -65,13 +62,13 @@ def run_robot():
 
             slam.getmap(mapbytes)
 
-            map_array = np.array(mapbytes).reshape((MAP_SIZE, MAP_SIZE))
-            img.set_data(map_array)
+            map_built_array = np.array(mapbytes).reshape((MAP_SIZE, MAP_SIZE))
+            img.set_data(map_built_array)
             plt.draw()
             plt.pause(0.1)
     finally:
-        df = pd.concat([df_lidar, pd.DataFrame(lidar_data)], ignore_index=True)
-        df.to_csv("lidar_data.csv", index=False)
+        map_built_array = np.array(mapbytes).reshape((MAP_SIZE, MAP_SIZE))
+        plt.imsave('map.png', map_built_array, cmap='gray')
         coppelia.stop_simulation()
 
 
