@@ -67,7 +67,7 @@ class P3DX:
                                                  f'ultrasonicSensor[{i}]'))
         self.lidar = self.sim.getObject(f'/{robot_id}/lidar')
         # self.lidar_sensor_1 = self.sim.getObject(
-        #     f'/{robot_id}/lidar/sensor2'
+        #     f'/{robot_id}/lidar/SICK_TiM310_sensor1'
         # )
 
     def get_sonar(self):
@@ -83,13 +83,13 @@ class P3DX:
         return data_loaded
 
     def get_position(self):
-        data = self.sim.getStringSignal('PionerP3dxPositionData')
+        data = self.sim.getStringSignal('PioneerP3dxPositionData')
         data_loaded = json.loads(data)
         return data_loaded
 
-    def get_lidar_sensor_1_data(self):
-        data = self.sim.readVisionSensor(self.lidar_sensor_1)
-        return data[2]
+    # def get_lidar_sensor_1_data(self):
+    #     data = self.sim.readVisionSensor(self.lidar_sensor_1)
+    #     return data[2]
 
     def set_speed(self, left_speed, right_speed):
         self.sim.setJointTargetVelocity(self.left_motor, left_speed)
