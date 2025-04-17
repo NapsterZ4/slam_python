@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 3. Instalar el algoritmo de BreezySLAM
 <pre>
-git clone https://github.com/simondlevy/BreezySLAM?tab=readme-ov-file
+git clone https://github.com/simondlevy/BreezySLAM
 cd BreezySlam/python
 pip install .
 </pre>

@@ -60,7 +60,7 @@ class P3DX:
         self.sim = sim
         print('*** getting handles', robot_id)
         self.left_motor = self.sim.getObject(f'/{robot_id}/leftMotor')
-        self.right_motor = self.sim.getObject(f'/{robot_id}/rightMotor')
+        self.right_motor = self.sim.getObject(f'/{robot_id}/rightMotor2')
         self.sonar = []
         for i in range(self.num_sonar):
             self.sonar.append(self.sim.getObject(f'/{robot_id}/'
